@@ -12,6 +12,7 @@ buildscript {
 
 apply plugin: 'war'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
 version = '0.0.1-SNAPSHOT'
@@ -21,8 +22,12 @@ repositories {
 	mavenCentral()
 }
 
-
+springBoot {
+//    excludeArtifactIds = "..."
+	customConfiguration = "mycustomconfiguration"
+}
 dependencies {
+
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
@@ -30,10 +35,24 @@ dependencies {
 }
 
 
-bootRepackage {
-    customConfiguration = "wasconfiguration"
+task clientBoot(type: BootRepackage) {
+	customConfiguration = "mycustomconfiguration"
 }
 
 configurations {
-    wasconfiguration.exclude group: 'org.springframework.boot'
+    mycustomconfiguration.exclude group: 'log4j'
+//    mycustomconfiguration.exclude group: 'org.springframework.boot'
+//    mycustomconfiguration.exclude group: 'ch.qos.logback'
+//    mycustomconfiguration.exclude group: 'org.slf4j'
+
 }
+
+dependencies {
+//    mycustomconfiguration configurations.runtime
+}
+
+
+
+
+
+
